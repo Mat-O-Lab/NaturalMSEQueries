@@ -2,7 +2,7 @@
 
 **Main Research Question**: How to query semantic Material Science Engineering(MSE) data easier than using SPARQL queries? 
 
-**Methodology**: Applying the State-of-Art(SOA) of Visual SPARQL queries aka SPARNATURAL to facilitate querying 
+**Methodology**: Applying the State-of-Art(SOA) of Visual SPARQL queries to facilitate querying 
 semantic MSE data instead of SPARQL queries.
 
 **Evaluation**: Include comparisons with SOA, and use the [SUS questionaries](http://www.measuringu.com/sus.php) 
@@ -10,215 +10,95 @@ to assess the usability level.
 
 Suggestions are always welcome!
 
-# The approach 
-The inspiration for this work comes from [Sparnatural](https://github.com/sparna-git/Sparnatural).
+# What is Sparklis?
 
-It supports the creation of basic graph patterns with the selection of values with autocomplete search or dropdown lists. It can be configured through a JSON-LD or OWL configuration file (that can be edited in Protégé) that defines the classes and properties to be presented in the component.
+Sparklis is a query builder in natural language that allows people to explore and query SPARQL endpoints with all the power of SPARQL and without any knowledge of SPARQL, nor of the endpoint vocabulary.
 
-![](documentation/screencast-sparnatural-dbpedia-v3-en.gif)
+Sparklis is a Web client running entirely in the browser. It directly connects to SPARQL endpoints to retrieve query results and suggested query elements. It covers a large subset of SPARQL 1.1 `SELECT` queries: basic graph patterns including cycles, `UNION`, `OPTIONAL`, `NOT EXISTS`, `FILTER`, `BIND`, complex expressions, aggregations, `GROUP BY`, `ORDER BY`. All those features can be combined in a flexible way, like in SPARQL. Results are presented as tables, and also on maps. A
+configuration panel offers a few configuration options to adapt to different endpoints (e.g., GET/POST, labelling properties and language tags). Sparklis also includes the YASGUI editor to let advanced users access and modify the SPARQL translation of the query.
 
-# Getting Started
+Sparklis reconciles expressivity and usability in semantic search by tightly combining a Query Builder, a Natural Language Interface, and a Faceted Search system. As a *Query Builder* it lets users build complex queries by composing elementary queries in an incremental fashion. An elementary query can be a class (e.g., "a film"), a property (e.g., "that has a director"), a RDF node (e.g., "Tim Burton"), a reference to another node (e.g., "the film"), or an operator (e.g., "not", "or", "highest-to-lowest", "+", "average").
 
-## How to run
-- clone the repository if you have not done it already.
-### (Developers) On the repository directory, execute the following terminal commands:
-- ``npm i`` to install dependencies
-- ``npm run start`` to launch the development server with auto-refresh
-- ``npm run build`` to compile the module using webpack
+As a *Faceted Search system*, at every step, the query under construction is well-formed, query results are computed and displayed, and the suggested query elements are derived from actual data - not only from schema - so as to prevent the construction of non-sensical or empty results. The display of results and data-relevant suggestions at every step provides constant and acurate feedback to users during the construction process. This supports exploratory search, serendipity, and confidence about final results.
 
-### With Docker
-1. Run ``docker-compose build``
-2. Run ``docker-compose up``
-3. Open your browser: http://127.0.0.1:8080
+As a *Natural Language Interface*, everything presented to users - queries, suggested query elements, and results - are verbalized in natural language, completely hidding SPARQL behind the user interface. Compared to Query Answering (QA) systems, the hard problem of spontaneous NL understanding is avoided by controlling query formulation through guided query construction, and replaced by the simpler problem of NL generation. The user interface lends itself to multilinguality, and is so far available in English, French, Spanish, and Dutch.
 
-## Tools and IDEs used
-- Visual Studio Code
+When refering to Sparklis in scientific documents, please use the following citation.
 
-## Installing your own triple store (Apache Fuseki) and adapt `index.html` to your SPARQL endpoint URL
-- Download the [apache Fuseki](https://dlcdn.apache.org/jena/binaries/apache-jena-fuseki-4.4.0.zip)
-- Extract the content and execute the following command in a terminal ``./fuseki-server``
-- The server should be running on ``http://localhost:3030/`` now you need to add your data
-- Go to the index.html and replace the information about the endpoint. Example ``<a id="endpoint" href="http://localhost:3030/testmechanics/sparql">http://localhost:3030/testmechanics/sparql</a>``
-- (**TODO**) One of the main first steps is to use our own data, e.g. [TeamMechanics data](https://raw.githubusercontent.com/Mat-O-Lab/RDFConverter/development/resources/franhoferTeamMechanik/data.ttl) - Mainly configuring the Left side of the screen to use our own ontology. Also present on the issue #[1199200364](https://github.com/Mat-O-Lab/NaturalMSEQueries/issues/2#issue-1199200364)
+> Sébastien Ferré: *Sparklis: An expressive query builder for SPARQL endpoints with guidance in natural language.* Semantic Web 8(3): 405-418 (2017)
 
-## Read the documentation
-1. Read [the Sparnatural documentation](https://docs.sparnatural.eu)
-2. Look at how things work in file `index.html`; 
+# Where can I try Sparklis?
 
-# Features
+Simply follow those steps:
+1. Go to the [online application](http://www.irisa.fr/LIS/ferre/sparklis/)
+2. Select a SPARQL endpoint in the dropdown list at the top (the default one is *Core English DBpedia*, a core subset of DBpedia)
+3. Build your query incrementally by clicking suggested query elements (in the three lists of suggestions, and through the hamburger menu in the query), and clicking different parts of the query to change focus. The suggestions are relative to the current focus.
 
-## Query Structure
+We recommend to visit the [*Examples page*](http://www.irisa.fr/LIS/ferre/sparklis/examples.html) where there are 100+ example queries over several datasets. Every example query can be opened in Sparklis in one click, and the query can then be further modified. For a number of them, there is a YouTube screencast to show how they are built step by step.
 
-### Basic query pattern
+# How can I use Sparklis on my own RDF dataset?
 
-Select the type of entity to search...
+It is enough to have a SPARQL endpoint for your dataset that is visible from your machine. It can be a publicly open endpoint (like for DBpedia or Wikidata), or a localhost endpoint (I personally use Apache Jena Fuseki but other stores should work too). The one important condition is that the endpoint server be [CORS-enabled](https://www.w3.org/wiki/CORS_Enabled) so that HTTP requests can be made to it from your browser, where Sparklis runs.
 
-![](documentation/1-screenshot-class-selection.png)
+Here a few recommendations about the contents of your store for best results:
 
-... then select the type of the related entity.
+* include RDFS/OWL triples declaring classes (`rdfs:Class`, `owl:Class`) and properties (`rdf:Property`, `owl:ObjectProperty`, `owl:DataProperty`), as well as their labels (`rdfs:label`) and their hierarchy (`rdfs:subClassOf`, `rdfs:subPropertyOf`)
+* ensure that all URI-resources have their label defined, preferably with `rdfs:label` and possibly with other standard properties (e.g., `skos:prefLabel`)
+* if named graphs are used, make sure to configure your store so that the default graphs contains the union of those named graphs
 
-![](documentation/2-screenshot-object-type-selection.png)
+The *Configure* menu offers a number of options to adapt Sparklis to your endpoint, and control the display. Here is a non-exhaustive list:
 
-In this case there is only one possible type of relation that can connect the 2 entities, so it gets selected automatically. Then select a value for the related entity, in this case in a dropdown list :
+* Endpoint and queries: max numbers of results/suggestions, GET vs POST, credentials
+* Ontology: display of class/property hierarchies, filtering of classes/properties, use of Sparklis-specific schema properties (see below)
+* Language and labels: interface language, labelling properties, fulltext search support
 
-![](documentation/3-screenshot-value-selection.png)
+Sparklis makes use of standard and non-standard properties to get more control on the building of queries, and on the display of suggestions and results. For ech property, there is generally a configuration option to activate its use.
 
-Congratulations, your first SPARQL query criteria is complete !
+* `sdo:position` (`sdo: = https://schema.org/`): it is possible to control the ordering of suggestions (classes, properties, and individuals) by setting this property with the desired rank of the suggestion. The related option is in *Configure advanced features*.
+* `sdo:logo`: it is possible to have small icons in front of entity labels by setting this property with URLs to those icons. Several icons can be attached to a same entity. The related option is in *Configure advanced features*, where the size of icons can be defined.
+* `rdfs:inheritsThrough`: suppose you have a `ex:location` property whose range `ex:Place` is organized into a hierarchy through the property `ex:isPartOf`. By adding to your dataset the triple `ex:location rdfs:inheritsThrough ex:isPartOf`, you get that whenever property `ex:location` is inserted into the query, inheritance through the place hierarchy is performed, and place suggestions are displayed as a tree. This is a generalization of the well-known `rdf:type` inheritance through `rdfs:subClassOf`. By adding triple `ex:Place rdfs:inheritsThrough ex:isPartOf`, the same effect is obtained when inserting class `ex:Place`. The related option in *Configure the ontology* must be activated.
+* `lis-owl:transitiveOf` (`lis-owl: = http://www.irisa.fr/LIS/ferre/vocab/owl#`): the use of `rdfs:inheritsThrough` entails the insertion of transitive paths (e.g., `ex:isPartOf*`) in the SPARQL query, which are very costly to evaluate. One solution is to materialize the transitive closure as a new property `ex:isPartOf_star` in the dataset, and to add the triple `ex:isPartOf_star lis-owl:transitiveOf ex:isPartOf`. By activating the related option in *Configure the ontology*, property path `ex:isPartOf*` will be replaced by `ex:isPartOf_star`.
+* `nary:subjectObject` (`nary: = http://www.irisa.fr/LIS/ferre/vocab/nary#`): this property handles the case of a reified relationship where there is a property `PS` from reification node to subject, and a property `PO` from reification node to object. By adding triple `PS nary:subjectObject PO`, the reification becomes transparent in Sparkls. See cyan properties on the Mondial endpoint for examples. The related option in *Configure the ontology* must be activated.
+* `nary:eventObject`: this is similar as above, except there is a property `PE` from subject to reification node (instead of the inverse `PS`). See cyan properties in the Wikidata endpoint for examples.
 
-![](documentation/4-screenshot-criteria.png)
+Once you have found a good configuration of your endpoint, you can generate a *permalink* with the button at the top, which you can share to the endpoint users. Those permalinks also include the current query and current focus, so you can also share example queries and template queries. You can also save queries by simply adding bookmarks in your browser.
 
-Now you can fetch the generated SPARQL query :
+If you find your endpoint of general interest, you are welcome to suggest me to add it to the list of SPARQL endpoints.
 
-![](documentation/5-screenshot-sparql.png)
+# How do I reuse Sparklis in my web site?
 
-### "WHERE"
+As Sparklis is only client-side code, it is possible to integrate Sparklis into your website by simply copying the contents of the `webapp` folder among your website files, and adding links to it from your web pages, with URL arguments containing the endpoint, the configuration, and possibly an initial query. To get those URLs, simply navigate in Sparklis and copy (and adapt as needed) the browser URL.
 
-This enables to navigate the graph :
+You can adapt the appearance of the main HTML file (`osparklis.html`, `osparklis.css`) as long as you retain the *Sparklis* name, and the credits in the page footer. You can for instance hide some configuration options and elements, you can change the look-and-feel, and the layout of elements. Be careful not to delete element ids and classes that are used by the JS code of Sparklis.
 
-![](documentation/6-where.png)
+Let me know of successful integrations, and also of problems you encounter in the process.
 
-### "AND"
+# Compiling Sparklis from the source code
 
-Combine criterias :
+Sparklis is developed in [OCaml](https://ocaml.org), and compiled to Javascript with the [js_of_ocaml](https://ocsigen.org/js_of_ocaml/latest/manual/overview) tool. It is strongly recommended to use the [opam](https://opam.ocaml.org/) tool to manage OCaml dependencies.
 
-![](documentation/7-and.png)
-
-### "OR"
-
-Select multiple values for a criteria :
-
-![](documentation/8-or.png)
-
-## Values selection
-
-Sparnatural offers currently 6 ways of selecting a value for a criteria : autocomplete field, dropdown list, simple string value, date range (year or date precision), date range with a search in a period name (e.g. "bronze age"), or no selection at all.
-
-### Autocomplete field
-
-![](documentation/9-autocomplete.png)
-
-### Dropdown list
-
-![](documentation/10-list.png)
-
-### Tree selector
-
-![](documentation/17-tree.png)
-
-### String value (text search)
-
-![](documentation/11-search.png)
-
-### Date range (year or date precision)
-
-![](documentation/12-time-date.png)
-
-### Date range with search in period name (chronocultural periods)
-
-![](documentation/14-chronocultural-period.png)
-
-(this requires data from [Perio.do](https://perio.do), a gazeeter of periods for linking and visualizing data)
-
-### Boolean selection
-
-![](documentation/15-boolean.png)
-
-### No value selection
-
-This is useful when a type a of entity is used only to navigate the graph, but without the ability to select an instance of these entities.
-
-![](documentation/13-no-value.png)
-
-
-## Multilingual
-
-Sparnatural is multilingual and supports displaying labels of classes and properties in multiple languages.
-
-## Support for OPTIONAL and FILTER NOT EXISTS
-
-Sparnatural supports the `OPTIONAL` and `FILTER NOT EXISTS {}` keywords applied to a whole "branch" of the query.
-See here how to search for French Museums and the name of Italian painters they display, _if any_ :
-
-![](documentation/16-optional.gif)
-
-
-## Limitations
-
-### No UNION or BIND, etc.
-
-Sparnatural does not support the creation of UNION, SERVICE, BIND, etc...
-
-### SPARQL endpoint needs to be CORS-enabled
-
-To send SPARQL queries to a service that is not hosted on the same domain name as the web page in which Sparnatural is included, the SPARQL endpoint needs to allow [Cross-Origin Resource Sharing (CORS)](https://enable-cors.org/). But we have SPARQL proxies for those who are not, don't worry ;-)
-
-# Integration
-
-## Specification of classes and properties
-
-The component is configurable using a an [OWL configuration file](https://docs.sparnatural.eu/OWL-based-configuration) editable in Protégé.. Look at the specification files of [the demos](https://github.com/sparna-git/sparnatural.eu/tree/main/demos) to get an idea. 
-
-Alternatively one can also use a [JSON(-LD) ontology file](https://docs.sparnatural.eu/JSON-based-configuration). A JSON(-LD) configuration file contains :
-
-### Class definition
-
-```json
-    {
-      "@id" : "http://dbpedia.org/ontology/Museum",
-      "@type" : "Class",
-      "label": [
-        {"@value" : "Museum", "@language" : "en"},
-        {"@value" : "Musée","@language" : "fr"}
-      ],
-      "faIcon":  "fas fa-university"
-    },
-```
-
-### Property definitions with domains and ranges
-
-```json
-    {
-      "@id" : "http://dbpedia.org/ontology/museum",
-      "@type" : "ObjectProperty",
-      "subPropertyOf" : "sparnatural:AutocompleteProperty",
-      "label": [
-        {"@value" : "displayed at","@language" : "en"},
-        {"@value" : "exposée à","@language" : "fr"}
-      ],
-      "domain": "http://dbpedia.org/ontology/Artwork",
-      "range": "http://dbpedia.org/ontology/Museum",
-      "datasource" : "datasources:search_rdfslabel_bifcontains"
-    },
-```
-
-### Using font-awesome icons
-
-It is possible to directly use font-awesome icons in place of icons embedded in your application :
-
-```json
-"faIcon":  "fas fa-user",
-```
-
-## How to integrate Sparnatural in a webpage
-
-Look at [this page in the documentation](https://docs.sparnatural.eu/Javascript-integration).
-
-
-## Map the query structure to a different graph structure
-
-Map classes or properties in the config to a corresponding SPARQL property path or a corresponding class URI, using the `sparqlString` JSON key, e.g. :
+The following build steps were found to work on Ubuntu (20.04 LTS) by [waldenn](https://github.com/waldenn):
 
 ```
-    {
-      "@id" : "http://labs.sparna.fr/sparnatural-demo-dbpedia/onto#bornIn",
-      "@type" : "ObjectProperty",
-      ...
-      "sparqlString": "<http://dbpedia.org/ontology/birthPlace>/<http://dbpedia.org/ontology/country>",
-    },
+    bash -c "sh <(curl -fsSL https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh)"
+    opam install csv lwt js_of_ocaml js_of_ocaml-lwt lwt_ppx js_of_ocaml-ppx str unix num xmlm xml-light lablgtk2
+    eval $(opam env)
+    sudo apt-get install camlp5
+    git clone https://github.com/sebferre/sparklis.git
+    cd sparklis
+    make
 ```
 
-Then call `expandSparql` on the `sparnatural` instance by passing the original SPARQL query, to replace all mentions of original classes and properties URI with the corresponding SPARQL string :
+# Credits
 
-```
-queryString = sparnatural.expandSparql(queryString);
-```
+Author: [Sébastien Ferré](http://people.irisa.fr/Sebastien.Ferre/)
+
+Affiliation: Univ. Rennes 1, team [SemLIS](http://www-semlis.irisa.fr/) at IRISA
+
+Copyright © 2013 Sébastien Ferré, IRISA, Université de Rennes 1, France
+
+Licence: Apache Licence 2.0
+
+Citation: *Ferré, Sébastien. ‘Sparklis: An Expressive Query Builder for SPARQL Endpoints with Guidance in Natural Language’. Semantic Web 8(3) : 405-418. IOS Press, 2017.* [PDF](https://hal.inria.fr/hal-01485093/file/sparklis-preprint.pdf)
+
+
