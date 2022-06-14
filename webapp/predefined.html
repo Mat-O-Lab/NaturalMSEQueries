@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Predifined Queries with NaturalMSEQueries</title>
+<meta name="author" content="Sébastien Ferré"/>
+<meta name="description" content="Sparklis lets you explore a RDF dataset through a SPARQL endpoint without the need to read or write SPARQL queries. Queries are displayed in natural language syntax, and are incrementally built by clicking suggested query elements, and by inserting them at the current focus. Only relevant suggestions are made, so that empty results are avoided."/>
+<meta name="keywords" content="SPARQL, faceted search, semantic search, exploratory search, complex queries, natural language interface, logical information systems"/>
+<meta charset="UTF-8">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<!-- Bootstrap -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<!-- Sparklis -->
+<link rel="stylesheet" type="text/css" href="osparklis.css">
+</head>
+
+<body>
+  <!--  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+	<span class="navbar-brand">Example queries for Sparklis</span>
+      </div>
+    </div>
+  </nav> -->
+
+  <div class="container">
+  <div class="page-header">
+    <h2>Predifined Queries with NaturalMSEQueries</h2>
+  </div>
+
+  <p>
+    This page lists a number of predefined queries in the domain of Materials Science and Engineering.
+  </p>
+  <p>
+    For
+    each example query, a link enables to directly jump to it in
+    NaturalMSEQueries, and to navigate further.
+  </p>
+
+  <div class="row">
+  <ul class="col-md-3 nav nav-pills nav-stacked">
+    <li class="active"><a data-toggle="pill" href="#tensiletest">Tensile Test</a></li>
+    <li><a data-toggle="pill" href="#mechanik">All ckasses from team Mechanik</a></li>
+  </ul>
+
+  <div class="col-md-9 tab-content">
+    <div id="tensiletest" class="tab-pane fade in active">
+      <h3>Example queries demonstrated in the <a target="_blank" href="https://youtu.be/O999FVXn8Qc">YouTube demo</a></h3>
+  <ol>
+    <li><strong>List of Material States sorted by Name.</strong>
+      <a class="sparklis-permalink" target="_blank" href="osparklis.html?title=%0A%09%09%20%20Core%20English%20DBpedia%0A%09%09&endpoint=https%3A//fuseki.matolab.org/TensileTest_cco/query&sparklis-query=%5BVId%5DReturn%28Det%28An%281%2CModif%28Select%2CUnordered%29%2CClass%28%22https%3A//purl.matolab.org/mseo/methods/tensile_test/MaterialState%22%29%29%2CNone%29%29&sparklis-path=D"><button class="btn btn-default btn-sm">Open in Sparklis</button></a>
+      <div id="lisql"><span id="focus1" class="focus">give me every material state.</div>
+    </li>
+
+    <li><strong>List of Material States sorted by Name.</strong>
+      <a class="sparklis-permalink" target="_blank" href="osparklis.html?title=%0A%09%09%20%20Core%20English%20DBpedia%0A%09%09&endpoint=https%3A//fuseki.matolab.org/TensileTest_cco/query&sparklis-query=%5BVId%5DReturn%28Det%28An%281%2CModif%28Select%2CUnordered%29%2CClass%28%22https%3A//purl.matolab.org/mseo/methods/tensile_test/MaterialState%22%29%29%2CNone%29%29&sparklis-path=D"><button class="btn btn-default btn-sm">Open in Sparklis</button></a>
+      <div id="lisql"><span id="focus1" class="focus">give me every material state.</div>
+    </li>
+  </ol>
+    </div>
+
+  </div>
+
+  </div>
+  </div>
+  </div>
+
+  <footer>
+    <hr/>
+    <!-- licence CC-BY-NC -->
+    <a rel="license" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a>
+    
+    <span class="texte lang-en">Created by</span>
+    <span class="texte lang-fr">Créé par </span>
+    <span class="texte lang-es">Creado por </span>
+    <span class="texte lang-nl">Gemaakt door </span>
+    <a target="_blank" href="https://github.com/Mat-O-Lab/"><img src="https://raw.githubusercontent.com/Mat-O-Lab/TablesToCSV/main/static/resources/MatOLab-Logo.svg" alt="Matolab" height="20"></a>. Inspired by 
+    <a target="_blank" href="http://www.irisa.fr/LIS/ferre/sparklis">SPARKLIS</a>
+    <br/>
+
+    <span class="texte lang-es">
+      Traducido al Español por <a target="_blank" href="mailto:jose.ortizv@ucuenca.ec">José Enrique Ortiz Vivar</a>, revisado por <a target="_blank" href="https://webdiis.unizar.es/people/cbobed">Carlos Bobed</a>.
+      <br/>
+    </span>
+    <span class="texte lang-nl">
+      Vertaald naar het Nederlands door <a target="_blank" href="mailto:Erwin.Folmer@kadaster.nl">Erwin Folmer</a>.
+      <br/>
+    </span>
+
+    <br/>
+
+    <span class="texte lang-en">Last modified Jun 09th, 2022. Visit </span>
+    <span class="texte lang-fr">Dernière modification le 26 mai 2021. Visiter </span>
+    <span class="texte lang-es">Última modificación el 26 de Mayo 2021. Visite </span>
+    <span class="texte lang-nl">Voor het laatst gewijzigd op 26 Mei 2021. Bezoek </span>
+    <a target="_blank" href="https://github.com/Mat-O-Lab/NaturalMSEQueries">GitHub</a>
+    <span class="texte lang-en"> for more information.</span>
+    <span class="texte lang-fr"> pour plus d'information.</span>
+    <span class="texte lang-es"> para más información.</span>
+    <span class="texte lang-nl"> voor meer informatie.</span>
+  </footer>
+</body>
+</html>
