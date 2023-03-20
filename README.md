@@ -1,4 +1,4 @@
-# NaturalMSEQueries - A natural way to query Material Sciences Engineering data experiments
+# NaturalMSEQueries - A natural way to query Materials Science Engineering data experiments
 
 ![workflow](https://user-images.githubusercontent.com/9248325/215797822-86c27914-a2fa-46a7-bc76-035c0c57c42d.png)
 
